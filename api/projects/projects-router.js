@@ -1,38 +1,45 @@
 // Write your "projects" router here!
 const express = require('express');
-
+const projectsModel = require('./projects-model');
 
 const router = express.Router();
 
-router.get('/', (req, res) => {
+router.get('/', async (req, res) => {
+    try{
+    const results = await projectsModel.get()
     res.status(200).json({
-        message: 'Hello From API Projects!'
+        projects: results
     })
+    } catch(err) {
+        res.send(err)
+    }
 })
 
-router.get('/api/projects', (req, res) => {
-    res.status(200).json({ 
-        message: 'Hello from api projects!',
-    })
+
+router.get('/:id', async (req, res) => {
+    try{
+        const results = await projectsModel.get(req.params.id)
+        res.status(200).json({
+            project: results
+        })
+    } catch(err){
+        res.send(err)
+    }
 })
 
-router.get('/api/projects/:id', (req, res) => {
-
-})
-
-router.post('/api/projects', (req, res) => {
-
-})
-
-router.put('/api/projects/:id', (req, res) => {
-
-})
-
-router.delete('/api/projects/id', (req, res) => {
+router.post('/', (req, res) => {
 
 })
 
-router.get('/api/projects/:id/actions', (req, res) => {
+router.put('/:id', (req, res) => {
+
+})
+
+router.delete('/id', (req, res) => {
+
+})
+
+router.get('/:id/actions', (req, res) => {
 
 })
 

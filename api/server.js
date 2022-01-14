@@ -15,6 +15,11 @@ function logger(req, res, next){
 
 server.use(logger);
 
+// server.use((req, res, next) => {
+//     console.log('the req flows through')
+//     next()
+// })
+
 server.use('/api/projects', projectsRouter)
 
 
