@@ -1,7 +1,7 @@
 // Write your "projects" router here!
 const express = require('express');
 const projectsModel = require('./projects-model');
-const { validateProject } = require('./projects-middleware')
+const { validateProject, validateId } = require('./projects-middleware')
 
 const router = express.Router();
 
@@ -37,16 +37,31 @@ router.post('/', validateProject, async (req, res) => {
     }
 })
 
-router.put('/:id', (req, res) => {
-
+router.put('/:id', validateProject ,async (req, res) => {
+    try {
+        const results = await projectsModel.update(req.params.id, req.body)
+        res.send(results)
+    } catch (err) {
+        res.send(err)
+    }
 })
 
-router.delete('/id', (req, res) => {
-
+router.delete('/:id', validateId, async (req, res) => {
+    try {
+        await projectsModel.remove(req.params.id)
+        res.send(200)
+    } catch (error) {
+        res.send(404)
+    }
 })
 
-router.get('/:id/actions', (req, res) => {
-
+router.get('/:id/actions', validateId, async (req, res) => {
+    try {
+        const results = await projectsModel.get(req.params.id)
+        res.send(results.actions)
+    } catch (error) {
+        res.send(400)
+    }
 })
 
 module.exports = router;

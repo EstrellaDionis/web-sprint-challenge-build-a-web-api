@@ -1,11 +1,17 @@
 // Write your "actions" router here!
 const express = require('express');
+const actionsModel = require('./actions-model')
 
 
 const router = express.Router();
 
-router.get('/api/actions', (req, res) => {
-
+router.get('/api/actions', async (req, res) => {
+    try{
+        const results = await actionsModel.get(req.body)
+        res.send(results)
+    } catch(err){
+        res.send(err)
+    }
 })
 
 router.get('/api/actions/:id', (req, res) => {
