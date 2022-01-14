@@ -19,9 +19,9 @@ server.use('/api/projects', projectsRouter)
 
 
 
-// server.use('/', (req, res) => {
-//     res.send(`<h2>Build a web api sprint</h2>`)
-// });
+server.use('/', (req, res) => {
+    res.send(`<h2>Build a web api sprint</h2>`)
+});
 
 
 
