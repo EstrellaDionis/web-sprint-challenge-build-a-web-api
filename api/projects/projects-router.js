@@ -8,9 +8,7 @@ const router = express.Router();
 router.get('/', async (req, res) => {
     try{
     const results = await projectsModel.get()
-    res.status(200).json({
-        projects: results
-    })
+    res.send(results)
     } catch(err) {
         res.send(err)
     }
@@ -20,9 +18,11 @@ router.get('/', async (req, res) => {
 router.get('/:id', async (req, res) => {
     try{
         const results = await projectsModel.get(req.params.id)
-        res.status(200).json({
-            project: results
-        })
+        if (results === null) {
+            res.send(404)
+        } else {
+            res.send(results)
+        }
     } catch(err){
         res.send(err)
     }
@@ -31,16 +31,14 @@ router.get('/:id', async (req, res) => {
 router.post('/', validateProject, async (req, res) => {
     try {
     const results = await projectsModel.insert(req.body)
-        res.status(201).json({
-            project: results
-        })
+        res.send(results)
     } catch (err) {
         res.send(err)
     }
 })
 
 router.put('/:id', (req, res) => {
-    
+
 })
 
 router.delete('/id', (req, res) => {
