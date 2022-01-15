@@ -1,31 +1,58 @@
 // Write your "actions" router here!
 const express = require('express');
 const actionsModel = require('./actions-model')
+const { validateAction, validateId } = require('./actions-middlware')
 
 
 const router = express.Router();
 
-router.get('/api/actions', async (req, res) => {
+router.get('/', async (req, res) => {
     try{
-        const results = await actionsModel.get(req.body)
+        const results = await actionsModel.get()
         res.send(results)
     } catch(err){
         res.send(err)
     }
 })
 
-router.get('/api/actions/:id', (req, res) => {
-
+router.get('/:id', async (req, res) => {
+    try{
+        const results = await actionsModel.get(req.params.id)
+        if (results === null) {
+            res.send(404)
+        } else {
+            res.send(results)
+        }
+    } catch(err){
+        res.send(err)
+    }
 })
 
-router.post('/api/actions', (req, res) => {
-
+router.post('/', validateAction, async (req, res) => {
+    try {
+        const results = await actionsModel.insert(req.body)
+            res.send(results)
+        } catch (err) {
+            res.send(err)
+        }
 })
 
-router.put('/api/actions/:id', (req, res) => {
-
+router.put('/:id', validateAction , async(req, res) => {
+    try {
+        const results = await actionsModel.update(req.params.id, req.body)
+        res.send(results)
+    } catch (err) {
+        res.send(err)
+    }
 })
 
-router.delete('/api/actions/:id', (req, res) => {
-    
+router.delete('/:id', validateId, async (req, res) => {
+    try {
+        await actionsModel.remove(req.params.id)
+        res.send(200)
+    } catch (error) {
+        res.send(404)
+    }
 })
+
+module.exports = router;
